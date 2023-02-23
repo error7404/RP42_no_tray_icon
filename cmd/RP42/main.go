@@ -7,28 +7,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/alexandregv/RP42/internal/icon"
 	"github.com/alexandregv/RP42/pkg/api"
-	"github.com/getlantern/systray"
 	discord "github.com/hugolgst/rich-go/client"
 )
 
 const DISCORD_APP_ID = "531103976029028367"
 
 func main() {
-	systray.Run(onReady, onExit)
-}
-
-func setupTray() {
-	systray.SetIcon(icon.Data)
-	systray.SetTitle("RP42")
-
-	mQuit := systray.AddMenuItem("Quit", "Quit")
-
-	go func() {
-		<-mQuit.ClickedCh
-		systray.Quit()
-	}()
+	onReady()
 }
 
 func sendActivity(details string, state string, largeText string, smallImage string, smallText string, startTimestamp *time.Time) {
@@ -119,8 +105,6 @@ func setPresence(user *api.User, location *api.Location, coalition *api.Coalitio
 }
 
 func onReady() {
-	setupTray()
-
 	osUser, err := user.Current()
 	if err != nil {
 		panic(err)
